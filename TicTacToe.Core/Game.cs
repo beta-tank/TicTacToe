@@ -8,6 +8,7 @@ namespace TicTacToe.Core
     public class Game : IEntity
     {
         public int Id { get; set; }
+        public Guid Token { get; set; }
         public string[] Players { get; set; }
         public Field Field { get; set; }
         public virtual ICollection<Move> Moves { get; set; }
@@ -33,6 +34,7 @@ namespace TicTacToe.Core
             Winner = PlayerCode.None;
             Field = new Field();
             Players = new string[2];
+            Token = Guid.NewGuid();
         }
 
         public bool Move(PlayerCode player, byte cell)
