@@ -9,7 +9,7 @@ namespace TicTacToe.Core
     {
         public int Id { get; set; }
         public Guid Token { get; set; }
-        public string[] Players { get; set; }
+        public string Player { get; set; }
         public Field Field { get; set; }
         public virtual ICollection<Move> Moves { get; set; }
         public GameStatus Status { get; set; }
@@ -33,7 +33,6 @@ namespace TicTacToe.Core
             StartTime = DateTime.UtcNow;
             Winner = PlayerCode.None;
             Field = new Field();
-            Players = new string[2];
             Token = Guid.NewGuid();
         }
 
@@ -54,19 +53,6 @@ namespace TicTacToe.Core
                 return GameStatus.Done;
             }
             return GameStatus.NoteDone;
-        }
-
-        public string GetName(PlayerCode player)
-        {
-            switch (player)
-            {
-                case PlayerCode.One:
-                    return Players[0];
-                case PlayerCode.Two:
-                    return Players[1];
-                default:
-                    return null;
-            } 
         }
     }
 }
