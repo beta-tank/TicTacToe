@@ -8,7 +8,7 @@ namespace TicTacToe.Core
     public class Field : IEntity
     {
         public int Id { get; set; }
-        public virtual Game Game { get; set; }
+        public Game Game { get; set; }
         public string CellsString {
             get { return Join(";", Cells.Select(n => (byte)n));}
             set { Cells = value.Split(';').Select(n =>(PlayerCode) Convert.ToByte(n)).ToArray(); }

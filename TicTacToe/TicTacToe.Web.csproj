@@ -132,11 +132,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201510121414241_base.cs" />
-    <Compile Include="Migrations\201510121414241_base.Designer.cs">
-      <DependentUpon>201510121414241_base.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -277,11 +272,6 @@
       <Project>{0354d9cb-c675-4948-b9d1-66b387697016}</Project>
       <Name>TicTacToe.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201510121414241_base.resx">
-      <DependentUpon>201510121414241_base.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
