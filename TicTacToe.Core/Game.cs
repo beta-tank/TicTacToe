@@ -10,7 +10,7 @@ namespace TicTacToe.Core
         public int Id { get; set; }
         public Guid Token { get; set; }
         public string Player { get; set; }
-        public Field Field { get; set; }
+        public virtual Field Field { get; set; }
         public virtual ICollection<Move> Moves { get; set; }
         public GameStatus Status { get; set; }
         public DateTime StartTime { get; set; }
@@ -32,8 +32,13 @@ namespace TicTacToe.Core
             Status = GameStatus.NoteDone;
             StartTime = DateTime.UtcNow;
             Winner = PlayerCode.None;
-            Field = new Field();
             Token = Guid.NewGuid();
+        }
+
+        public void CreateField()
+        {
+            var field = new Field() {Game = this};
+            Field = field;
         }
 
         public bool Move(PlayerCode player, byte cell)

@@ -21,14 +21,27 @@ namespace TicTacToe.Web.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<Game>()
                 .HasMany<Move>(g => g.Moves)
-                .WithRequired(m => m.Game);
+                .WithRequired(m => m.Game)
+                .WillCascadeOnDelete(true);
+
             modelBuilder.Entity<Game>()
                 .HasRequired<Field>(g => g.Field)
-                .WithRequiredDependent(f => f.Game);
+                .WithRequiredDependent(f => f.Game)
+                .WillCascadeOnDelete(true);
 
+            //modelBuilder.Entity<Field>()
+            //    .HasRequired<Game>(f => f.Game)
+            //    .WithRequiredPrincipal(g => g.Field);
+
+            //.WillCascadeOnDelete(true);
+            //modelBuilder.Entity<Field>()
+            //    .HasRequired<Game>(f => f.Game)
+            //    .WithRequiredPrincipal(g => g.Field)
+            //    .WillCascadeOnDelete(true);
+            base.OnModelCreating(modelBuilder);
         }
 
     }
