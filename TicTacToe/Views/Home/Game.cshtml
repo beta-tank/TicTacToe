@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Game";
+    var fieldSize = 3;
+}
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <h1 id="Staus">Status string</h1>
+        <div class="field-container container-fluid">
+            <div class="field">
+                @for (var i = 0; i < fieldSize; i++)
+                {
+                    <div class="field-row">
+                        @for (var j = 0; j < fieldSize; j++)
+                        {
+                            <div id="@(i*3 + j)" class="field-cell"><span class="cell-content">X</span></div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <h1>Moves history</h1>
+        
+    </div>
+</div>
+
