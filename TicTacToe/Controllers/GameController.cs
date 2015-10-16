@@ -26,13 +26,6 @@ namespace TicTacToe.Controllers
 
         public ActionResult Index()
         {
-            //var context = new ApplicationDbContext();
-            //var game = new Game {Player = "123"};
-            //var field = new Field() {Game = game};
-            //game.Field = field;
-            //context.Games.Add(game);
-            //context.Commit();
-            //context.Dispose();
             return View();
         }
 
