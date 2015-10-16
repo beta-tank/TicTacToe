@@ -7071,6 +7071,9 @@ body {
   border: solid;
   border-color: black;
 }
+.empty-cell:hover {
+  background-color: #7b8a8b;
+}
 .cell-content {
   position: absolute;
   padding: 5%;
