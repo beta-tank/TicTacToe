@@ -34,6 +34,7 @@ namespace TicTacToe.Controllers
             game.CreateField();
             game.Player = playerName;
             Context.Games.Add(game);
+            Context.Commit();
             return View(game);
         }
 
