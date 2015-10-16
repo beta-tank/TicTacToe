@@ -12,7 +12,16 @@ namespace TicTacToe.Controllers
     public class GameController : Controller
     {
         private ApplicationDbContext context;
-        public ApplicationDbContext Context => context ?? (context = new ApplicationDbContext());
+        //public ApplicationDbContext Context => context ?? (context = new ApplicationDbContext());
+        public ApplicationDbContext Context {
+            get
+            {
+                if(context == null)
+                    context = new ApplicationDbContext();
+                return context;
+            }
+            private set { context = value; }
+        }
 
         public ActionResult Index()
         {
@@ -63,7 +72,9 @@ namespace TicTacToe.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            context?.Dispose();
+            if(context != null)
+                context.Dispose();
+            //context?.Dispose();
             base.Dispose(disposing);
         }
     }
