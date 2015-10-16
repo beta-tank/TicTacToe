@@ -27,7 +27,16 @@
     </div>
     <div class="col-md-6 col-sm-12">
         <h1 class="text-center">Moves history</h1>
-
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Player</th>
+                    <th>Position</th>
+                </tr>
+            </thead>
+            <tbody id="movesBody"></tbody>
+        </table>
     </div>
 </div>
 
@@ -42,6 +51,7 @@
             var oPic = '<img class="cell-content" src="/Content/img/o.svg" alt="O">';
             var xPic = '<img class="cell-content" src="/Content/img/x.svg" alt="X">';
             var isWait = false;
+            var movesCounter = 0;
 
             // Game functions
 
@@ -73,13 +83,16 @@
                     return;
                 }
                 paintMove(userMove, 1);
-                if (response.opponentMove !== -1)
+                addMove(userMove, 1);
+                if (response.opponentMove !== -1) {
                     paintMove(response.opponentMove, 2);
+                    addMove(response.opponentMove, 2);
+                }
                 if (response.isGameDone) {
                     $(".empty-cell").removeClass("empty-cell");
                     if (response.winner === 0)
                         setStatus(borderLable("Draw. Game done.", "default"));
-                    if(response.winner === 1)
+                    if (response.winner === 1)
                         setStatus(borderLable(playerName + ", you win!", "success"));
                     if (response.winner === 2)
                         setStatus(borderLable("Bot win, you lose :(", "danger"));
@@ -123,6 +136,20 @@
                 target.html(figure);
             }
 
+            function addMove(move, player) {
+                var content = '<tr><td>' + ++movesCounter + '</td><td>';
+                if (player === 1)
+                    content += borderLable(playerName, "success");
+                if (player === 2)
+                    content += borderLable("Bot", "danger");
+                content += '</td><td>' + positionToString(move) + '</td></tr>';
+                $("#movesBody").append(content);
+            }
+
+            function positionToString(position) {
+                return '[' + float2int(position % 3) + ';' + float2int(position / 3) + ']';
+            }
+
             // Extension functions
 
             function sendRequest(url, data, success, error) {
@@ -135,6 +162,10 @@
                     success: success,
                     error: error
                 });
+            }
+
+            function float2int(value) {
+                return value | 0;
             }
 
             function parseId(str) {
