@@ -144,11 +144,9 @@
     <Content Include="App_Data\db_log.ldf">
       <DependentUpon>db.mdf</DependentUpon>
     </Content>
-    <Content Include="Content\custom\styles.css" />
-    <Content Include="Content\custom\styles.min.css">
-      <DependentUpon>styles.css</DependentUpon>
-    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\img\o.svg" />
+    <Content Include="Content\img\x.svg" />
     <Content Include="Content\site.css">
       <DependentUpon>site.less</DependentUpon>
     </Content>
