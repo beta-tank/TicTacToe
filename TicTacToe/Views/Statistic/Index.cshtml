@@ -1,0 +1,57 @@
+﻿@using PagedList.Mvc
+@using TicTacToe.Core
+@using TicTacToe.Core.Enums
+@model PagedList.IPagedList<TicTacToe.Core.Game>
+
+@{
+    ViewBag.Title = "Statistics";
+}
+
+<h1>Last games</h1>
+<table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+        <th>Player</th>
+        <th>Winner</th>
+        <th>Date</th>
+        <th>Moves</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var game in Model)
+    {
+        <tr>
+            <td>@game.Player</td>
+            <td>@Winner(game)</td>
+            <td>@game.StartTime</td>
+            <td>@game.Moves.Count</td>
+        </tr>
+    }
+
+    </tbody>
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new {page}))
+
+@helper Winner(Game game)
+{
+    if (game.Status == GameStatus.NoteDone)
+    {
+        <div class="label label-warning">Not done</div>
+    }
+    else
+    {
+        switch (game.Winner)
+        {
+        case PlayerCode.One:
+                <div class="label label-success">@game.Player</div>
+            break;
+        case PlayerCode.Two:
+                <div class="label label-danger">Bot</div>
+            break;
+        case PlayerCode.None:
+                <div class="label label-default">Draw</div>
+            break;
+        }   
+}
+}
