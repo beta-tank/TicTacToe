@@ -43,13 +43,14 @@ namespace TicTacToe.Core
 
         public bool Move(PlayerCode player, byte cell)
         {
-            if (!Field.Move(player, cell)) return false;
+            if (Status == GameStatus.Done || !Field.Move(player, cell)) return false;
             Moves.Add(new Move() { Game = this, Player = player, Position = cell });
             return true;
         }
 
         public GameStatus IsDone()
         {
+            if (Status == GameStatus.Done) return Status;
             foreach (var comb in WinCombinations.Where(comb => Field[comb[0]] == Field[comb[1]] && Field[comb[1]] == Field[comb[2]]))
             {
                 Winner = Field[comb[0]];
