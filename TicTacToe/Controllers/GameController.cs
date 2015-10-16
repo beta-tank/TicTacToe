@@ -84,13 +84,6 @@ namespace TicTacToe.Controllers
             return View();
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
         private JsonResult SendJsonError(string errorText)
         {
             var result = new TurnResultViewModel
