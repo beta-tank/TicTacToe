@@ -78,7 +78,7 @@
                 if (response.isGameDone) {
                     $(".empty-cell").removeClass("empty-cell");
                     if (response.winner === 0)
-                        setStatus(borderLable("Draw. Game done", "default"));
+                        setStatus(borderLable("Draw. Game done.", "default"));
                     if(response.winner === 1)
                         setStatus(borderLable(playerName + ", you win!", "success"));
                     if (response.winner === 2)

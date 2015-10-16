@@ -23,7 +23,7 @@ namespace TicTacToe.Core
                 if (game.Field[Corners[3]] == player.Opponent())
                     cell = Corners[0];
                 if (cell == -1)
-                    game.Field[Corners[Rand.Next(0, 3)]] = player;
+                    cell = Corners[Rand.Next(0, 3)];
                 //// Если не занят центр, то занимаем
                 //if (game.Field[4] == PlayerCode.None)
                 //    cell = 4;
