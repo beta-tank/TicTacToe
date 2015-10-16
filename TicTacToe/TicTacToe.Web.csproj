@@ -282,6 +282,7 @@
     <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Game\Play.cshtml" />
     <Content Include="Views\Statistic\Index.cshtml" />
+    <Content Include="Views\Statistic\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

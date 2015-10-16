@@ -1,0 +1,50 @@
+﻿@using TicTacToe.Core
+@using TicTacToe.Core.Enums
+@model TicTacToe.Core.Game
+
+<table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Player</th>
+        <th>Position</th>
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        var moves = Model.Moves.OrderBy(m => m.Id).ToArray();
+    }
+    @for (var i = 0; i < moves.Length; i++)
+    {
+        <tr>
+            <td>@(i+1)</td>
+            <td>@Name(moves[i])</td>
+            <td>@Position(moves[i])</td>
+        </tr>
+    }
+
+    </tbody>
+</table>
+
+@helper Position(Move move)
+{
+    @:[
+    @((move.Position + 1)%3);
+    @:;
+    @(move.Position/3);
+    @:]
+}
+
+@helper Name(Move move)
+{
+
+switch (move.Player)
+{
+    case PlayerCode.One:
+            <div class="label label-success">@Model.Player</div>
+        break;
+    case PlayerCode.Two:
+            <div class="label label-danger">Bot</div>
+        break;
+    }
+}

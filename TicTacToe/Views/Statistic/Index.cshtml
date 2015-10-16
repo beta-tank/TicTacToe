@@ -20,7 +20,7 @@
     <tbody>
     @foreach (var game in Model)
     {
-        <tr>
+        <tr onclick="showMoves(@game.Id)">
             <td>@game.Player</td>
             <td>@Winner(game)</td>
             <td>@game.StartTime</td>
@@ -30,6 +30,18 @@
 
     </tbody>
 </table>
+
+<div class="modal fade" id="movesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Moves</h4>
+            </div>
+            <div id="modalContent" class="modal-body"></div>
+        </div>
+    </div>
+</div>
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new {page}))
 
@@ -53,5 +65,41 @@
                 <div class="label label-default">Draw</div>
             break;
         }   
+    }
 }
+
+@section Scripts {
+
+    @{
+        <script type="text/javascript">
+            var url = '@Url.Action("Details")';
+
+            function showMoves(gameId) {
+                var data = { "id": gameId }
+                sendRequest(url, data ,success, showError);
+            }
+
+            function success(data) {
+                $("#modalContent").html(data);
+                $("#movesModal").modal('show');
+            }
+
+            // Extension functions
+
+            function sendRequest(url, data, success, error) {
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    dataType: "html",
+                    data: data,
+                    success: success,
+                    error: error
+                });
+            }
+
+            function showError(xhr, status) {
+                alert("Произошла ошибка: " + xhr.status);
+            }
+        </script>
+    }
 }

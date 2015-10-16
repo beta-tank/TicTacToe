@@ -31,6 +31,15 @@ namespace TicTacToe.Web.Controllers
             return View(collection.ToPagedList(pageNumber, PageSize));
         }
 
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            var game = Context.Games.Find(id);
+            if(game == null)
+                return new HttpNotFoundResult();
+            return PartialView(game);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (context != null)
@@ -38,5 +47,7 @@ namespace TicTacToe.Web.Controllers
             //context?.Dispose();
             base.Dispose(disposing);
         }
+
+       
     }
 }
