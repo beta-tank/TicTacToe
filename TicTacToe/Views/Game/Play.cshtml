@@ -1,0 +1,95 @@
+﻿@model TicTacToe.Core.Game
+@{
+    ViewBag.Title = "Game";
+    const int fieldSize = 3;
+    //<img class="cell-content" src="/Content/img/o.svg" alt="O">
+}
+
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <h1 id="Staus" class="text-center">Your turn
+            <div class="label label-info">@Model.Player</div>
+        </h1>
+        <div class="field-container container-fluid">
+            <div class="field">
+                @for (var i = 0; i < fieldSize; i++)
+                {
+                    <div class="field-row">
+                        @for (var j = 0; j < fieldSize; j++)
+                        {
+                            <div id="cell-@(i*3 + j)" class="field-cell empty-cell" data-player="none" onclick="cellClicked(this)"><img class="cell-content" src="/Content/img/o.svg" alt="O"></div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <h1 class="text-center">Moves history</h1>
+
+    </div>
+</div>
+
+@section Scripts {
+
+    @{
+        <script type="text/javascript">
+            var playerName = '@Model.Player';
+            var token = '@Model.Token';
+            var id = '@Model.Id';
+            var turnUrl = '@Url.Action("Turn", "Game")';
+            var oPic = '<img class="cell-content" src="/Content/img/o.svg" alt="O">';
+            var xPic = '<img class="cell-content" src="/Content/img/x.svg" alt="X">';
+
+            function infoLable(text) {
+                return '<div class="label label-info">' + text + '</div>';
+            }
+
+            function warningLable(text) {
+                return '<div class="label label-warning">' + text + '</div>';
+            }
+
+            function cellClicked(cell) {
+                var data = { "turn":
+                                {
+                                "GameId": id,
+                                "Token": token,
+                                "Turn": parseId(cell.id)
+                                }
+                           };
+                sendRequest(
+                    turnUrl,
+                    JSON.stringify(data),
+                    function(res) {
+                        alert(res);
+                    },
+                    showError);
+            }
+
+            function sendRequest(url, data, success, error) {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: success,
+                    error: error
+                });
+            }
+
+            function parseId(str) {
+                return parseInt(str.replace(/[^\d.]/g, ''), 10);
+            }
+
+            function showError(xhr, status) {
+                alert("Произошла ошибка: " + xhr.status);
+            }
+        </script>
+    }
+}
+
+
+
+
