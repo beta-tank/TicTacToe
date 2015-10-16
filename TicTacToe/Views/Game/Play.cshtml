@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-6 col-sm-12">
-        <h1 id="Staus" class="text-center">Your turn
+        <h1 id="status" class="text-center">Your turn
             <div class="label label-info">@Model.Player</div>
         </h1>
         <div class="field-container container-fluid">
@@ -18,7 +18,7 @@
                     <div class="field-row">
                         @for (var j = 0; j < fieldSize; j++)
                         {
-                            <div id="cell-@(i*3 + j)" class="field-cell empty-cell" data-player="none" onclick="cellClicked(this)"><img class="cell-content" src="/Content/img/o.svg" alt="O"></div>
+                            <div id="cell-@(i*3 + j)" class="field-cell empty-cell" data-player="none" onclick="cellClicked(this)"></div>
                         }
                     </div>
                 }
@@ -43,16 +43,10 @@
             var xPic = '<img class="cell-content" src="/Content/img/x.svg" alt="X">';
             var isWait = false;
 
-            function infoLable(text) {
-                return '<div class="label label-info">' + text + '</div>';
-            }
-
-            function warningLable(text) {
-                return '<div class="label label-warning">' + text + '</div>';
-            }
+            // Game functions
 
             function cellClicked(cell) {
-                if (isWait) return;
+                if (isWait || !$("#" + cell.id).hasClass("empty-cell")) return;
                 isWait = true;
                 var data = {
                     "turn":
@@ -62,6 +56,7 @@
                         "turn": parseId(cell.id)
                     }
                 };
+                setStatus("Waiting for " + borderLable("Bot", "info") + " turn");
                 sendRequest(
                     turnUrl,
                     JSON.stringify(data),
@@ -73,13 +68,62 @@
 
             function successMove(response, userMove) {
                 isWait = false;
-
-
+                if (response.status === "error") {
+                    setStatus(borderLable(response.errorText, "warning"));
+                    return;
+                }
+                paintMove(userMove, 1);
+                if (response.opponentMove !== -1)
+                    paintMove(response.opponentMove, 2);
+                if (response.isGameDone) {
+                    $(".empty-cell").removeClass("empty-cell");
+                    if (response.winner === 0)
+                        setStatus(borderLable("Draw. Game done", "default"));
+                    if(response.winner === 1)
+                        setStatus(borderLable(playerName + ", you win!", "success"));
+                    if (response.winner === 2)
+                        setStatus(borderLable("Bot win, you louse :(", "default"));
+                    return;
+                }
+                setStatus(borderLable("Your turn " + playerName, "success"));
             }
 
             function errorMove(obj, status) {
+                isWait = false;
                 showError(obj, status);
             }
+
+            // UI functions
+
+            function borderLable(text, style) {
+                return '<div class="label label-' + style + '">' + text + '</div>';
+            }
+
+            //function infoLable(text) {
+            //    return '<div class="label label-info">' + text + '</div>';
+            //}
+
+            //function warningLable(text) {
+            //    return '<div class="label label-warning">' + text + '</div>';
+            //}
+
+            function setStatus(text) {
+                $('#status').html(text);
+            }
+
+            function paintMove(cell, player) {
+                var figure = "";
+                if (player === 1)
+                    figure = xPic;
+                if (player === 2)
+                    figure = oPic;
+                var target = $("#cell-" + cell);
+                //target.onclick = null;
+                target.removeClass("empty-cell");
+                target.html(figure);
+            }
+
+            // Extension functions
 
             function sendRequest(url, data, success, error) {
                 $.ajax({
@@ -100,6 +144,8 @@
             function showError(xhr, status) {
                 alert("Произошла ошибка: " + xhr.status);
             }
+
+
         </script>
     }
 }

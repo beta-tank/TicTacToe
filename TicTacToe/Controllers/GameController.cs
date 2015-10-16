@@ -60,18 +60,24 @@ namespace TicTacToe.Controllers
             var isTurnSuccess = game.Move(PlayerCode.One, turn.Turn);
             if (!isTurnSuccess)
                 return SendJsonError("Turn not valid");
-            var result = new TurnResultViewModel {Status = RusultStatus.Success};
+            var result = new TurnResultViewModel {status = RusultStatus.Success};
             if (game.IsDone() == GameStatus.Done)
             {
-                result.IsGameDone = true;
-                result.Winner = game.Winner;
+                result.isGameDone = true;
+                result.winner = game.Winner;
             }
             else
             {
                 var botMove = Bot.Move(game, PlayerCode.Two);
                 if (botMove == -1) return SendJsonError("Bot turn error");
-                result.OpponentMove = (byte) botMove;
+                result.opponentMove = (byte) botMove;
+                if (game.IsDone() == GameStatus.Done)
+                {
+                    result.isGameDone = true;
+                    result.winner = game.Winner;
+                }
             }
+            Context.Commit();
             return Json(result);
         }
 
@@ -96,8 +102,8 @@ namespace TicTacToe.Controllers
         {
             var result = new TurnResultViewModel
             {
-                Status = RusultStatus.Error,
-                ErrorText = errorText
+                status = RusultStatus.Error,
+                errorText = errorText
             };
             return Json(result);
         }
