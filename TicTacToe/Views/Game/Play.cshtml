@@ -54,20 +54,31 @@
             function cellClicked(cell) {
                 if (isWait) return;
                 isWait = true;
-                var data = { "turn":
-                                {
-                                "gameId": id,
-                                "token": token,
-                                "turn": parseId(cell.id)
-                                }
-                           };
+                var data = {
+                    "turn":
+                    {
+                        "gameId": id,
+                        "token": token,
+                        "turn": parseId(cell.id)
+                    }
+                };
                 sendRequest(
                     turnUrl,
                     JSON.stringify(data),
-                    function(res) {
-                        alert(res);
+                    function(obj) {
+                        successMove(obj, parseId(cell.id));
                     },
-                    showError);
+                    errorMove);
+            }
+
+            function successMove(response, userMove) {
+                isWait = false;
+
+
+            }
+
+            function errorMove(obj, status) {
+                showError(obj, status);
             }
 
             function sendRequest(url, data, success, error) {
