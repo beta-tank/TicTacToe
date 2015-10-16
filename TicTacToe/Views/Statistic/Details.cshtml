@@ -29,7 +29,7 @@
 @helper Position(Move move)
 {
     @:[
-    @((move.Position + 1)%3);
+    @(move.Position % 3);
     @:;
     @(move.Position/3);
     @:]
