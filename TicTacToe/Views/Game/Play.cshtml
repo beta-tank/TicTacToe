@@ -41,6 +41,7 @@
             var turnUrl = '@Url.Action("Turn", "Game")';
             var oPic = '<img class="cell-content" src="/Content/img/o.svg" alt="O">';
             var xPic = '<img class="cell-content" src="/Content/img/x.svg" alt="X">';
+            var isWait = false;
 
             function infoLable(text) {
                 return '<div class="label label-info">' + text + '</div>';
@@ -51,11 +52,13 @@
             }
 
             function cellClicked(cell) {
+                if (isWait) return;
+                isWait = true;
                 var data = { "turn":
                                 {
-                                "GameId": id,
-                                "Token": token,
-                                "Turn": parseId(cell.id)
+                                "gameId": id,
+                                "token": token,
+                                "turn": parseId(cell.id)
                                 }
                            };
                 sendRequest(
