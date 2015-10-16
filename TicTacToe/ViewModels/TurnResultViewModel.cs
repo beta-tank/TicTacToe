@@ -4,11 +4,16 @@ namespace TicTacToe.Web.ViewModels
 {
     public class TurnResultViewModel
     {
-        public string Status { get; set; }
-        public string ErrorText { get; set; }
-        public bool IsGameDone { get; set; }
-        public PlayerCode Winner { get; set; }
-        public byte OpponentMove { get; set; }
+        public string status { get; set; }
+        public string errorText { get; set; }
+        public bool isGameDone { get; set; }
+        public PlayerCode winner { get; set; }
+        public int opponentMove { get; set; }
+
+        public TurnResultViewModel()
+        {
+            opponentMove = -1;
+        }
     }
 
     public static class RusultStatus
