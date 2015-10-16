@@ -51,7 +51,9 @@ namespace TicTacToe.Core
         public GameStatus IsDone()
         {
             if (Status == GameStatus.Done) return Status;
-            foreach (var comb in WinCombinations.Where(comb => Field[comb[0]] == Field[comb[1]] && Field[comb[1]] == Field[comb[2]]))
+            foreach (var comb in WinCombinations.Where(comb => (Field[comb[0]] == PlayerCode.One || Field[comb[0]] == PlayerCode.Two)
+                                                            && Field[comb[0]] == Field[comb[1]]
+                                                            && Field[comb[1]] == Field[comb[2]]))
             {
                 Winner = Field[comb[0]];
                 EndTime = DateTime.UtcNow;
