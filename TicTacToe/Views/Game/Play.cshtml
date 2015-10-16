@@ -82,7 +82,7 @@
                     if(response.winner === 1)
                         setStatus(borderLable(playerName + ", you win!", "success"));
                     if (response.winner === 2)
-                        setStatus(borderLable("Bot win, you louse :(", "default"));
+                        setStatus(borderLable("Bot win, you lose :(", "danger"));
                     return;
                 }
                 setStatus(borderLable("Your turn " + playerName, "success"));
