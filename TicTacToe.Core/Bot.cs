@@ -8,7 +8,7 @@ namespace TicTacToe.Core
     {
         private static readonly Random Rand = new Random(DateTime.UtcNow.Millisecond);
         private static readonly byte[] Corners = {0, 2, 6, 8};
-        public static bool Move(Game game, PlayerCode player)
+        public static int Move(Game game, PlayerCode player)
         {
             var cell = -1;
             // Для первого хода
@@ -52,7 +52,7 @@ namespace TicTacToe.Core
                     }
                 }
             }
-            return game.Move(player, (byte)cell);
+            return game.Move(player, (byte)cell) ? cell : -1;
         }
     }
 }
