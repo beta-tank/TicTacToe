@@ -52,7 +52,7 @@ namespace TicTacToe.Controllers
         public JsonResult Turn(TurnClientViewModel turn)
         {
            
-            var game = context.Games.Find(turn.GameId);
+            var game = Context.Games.Find(turn.GameId);
             if (game == null)
                 return SendJsonError("Game not found");
             if (!game.Token.Equals(turn.Token))
