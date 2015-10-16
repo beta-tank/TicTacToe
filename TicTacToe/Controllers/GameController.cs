@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TicTacToe.Core;
+using TicTacToe.Core.Enums;
 using TicTacToe.Web.Data;
 using TicTacToe.Web.ViewModels;
 
@@ -50,7 +51,28 @@ namespace TicTacToe.Controllers
         
         public JsonResult Turn(TurnClientViewModel turn)
         {
-            return Json(turn);
+           
+            var game = context.Games.Find(turn.GameId);
+            if (game == null)
+                return SendJsonError("Game not found");
+            if (!game.Token.Equals(turn.Token))
+                return SendJsonError("Token for this game is not valid");
+            var isTurnSuccess = game.Move(PlayerCode.One, turn.Turn);
+            if (!isTurnSuccess)
+                return SendJsonError("Turn not valid");
+            var result = new TurnResultViewModel {Status = RusultStatus.Success};
+            if (game.IsDone() == GameStatus.Done)
+            {
+                result.IsGameDone = true;
+                result.Winner = game.Winner;
+            }
+            else
+            {
+                var botMove = Bot.Move(game, PlayerCode.Two);
+                if (botMove == -1) return SendJsonError("Bot turn error");
+                result.OpponentMove = (byte) botMove;
+            }
+            return Json(result);
         }
 
         public ActionResult About()
@@ -68,6 +90,16 @@ namespace TicTacToe.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        private JsonResult SendJsonError(string errorText)
+        {
+            var result = new TurnResultViewModel
+            {
+                Status = RusultStatus.Error,
+                ErrorText = errorText
+            };
+            return Json(result);
         }
 
         protected override void Dispose(bool disposing)

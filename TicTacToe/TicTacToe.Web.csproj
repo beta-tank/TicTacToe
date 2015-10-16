@@ -139,6 +139,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\TurnClientViewModel.cs" />
+    <Compile Include="ViewModels\TurnResultViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\db.mdf" />
