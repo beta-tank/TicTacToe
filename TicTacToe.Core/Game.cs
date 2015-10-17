@@ -8,6 +8,9 @@ namespace TicTacToe.Core
     public class Game : IEntity
     {
         public int Id { get; set; }
+        /// <summary>
+        /// Токен для предотвращения совершения хода игроками, которые её не создавали
+        /// </summary>
         public Guid Token { get; set; }
         public string Player { get; set; }
         public virtual Field Field { get; set; }
@@ -16,6 +19,9 @@ namespace TicTacToe.Core
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public PlayerCode Winner { get; set; }
+        /// <summary>
+        /// Массив выйгрышных комбинаций
+        /// </summary>
         private static readonly byte[][] WinCombinations = {
             new byte[] {0,1,2},
             new byte[] {3,4,5},
@@ -51,6 +57,7 @@ namespace TicTacToe.Core
         public GameStatus IsDone()
         {
             if (Status == GameStatus.Done) return Status;
+            // Проверяем не выполнил ли один из игроков выйгрышную комбинацию
             foreach (var comb in WinCombinations.Where(comb => (Field[comb[0]] == PlayerCode.One || Field[comb[0]] == PlayerCode.Two)
                                                             && Field[comb[0]] == Field[comb[1]]
                                                             && Field[comb[1]] == Field[comb[2]]))
