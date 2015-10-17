@@ -26,4 +26,5 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 packages/
-App_Data/
+**/AppData/*.mdf
+**/Appdata/*.ldf
