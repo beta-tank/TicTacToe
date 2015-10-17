@@ -20,7 +20,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Play game!", "Index", "Game", new {playerName = "MLGPRO100"}, null)</li>
+                    <li>@Html.ActionLink("Play game!", "Index", "Game")</li>
                     <li>@Html.ActionLink("Last Games", "Index", "Statistic")</li>
                     <li>@Html.ActionLink("About", "About", "Game")</li>
                 </ul>
@@ -31,7 +31,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - beta-tank</p>
+            <p>&copy; @DateTime.Now.Year - <a href="https://github.com/beta-tank" target="blank">beta-tank</a></p>
         </footer>
     </div>
 

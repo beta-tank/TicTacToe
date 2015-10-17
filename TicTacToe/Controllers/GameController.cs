@@ -81,7 +81,8 @@ namespace TicTacToe.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "About.";
+            ViewBag.Title = "About";
+            ViewBag.Message = "Tic Tac toe game.";
             return View();
         }
 
