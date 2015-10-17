@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Tic Tac Toe";
 }
 
 <div class="invite-panel">
@@ -17,6 +17,7 @@
 
     @{
         <script type="text/javascript">
+            // Start new game
             function playGame() {
                 var text = $("#player-name").val();
                 if (text === null || text === "") {

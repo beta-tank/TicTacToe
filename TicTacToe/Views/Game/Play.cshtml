@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Game";
     const int fieldSize = 3;
-    //<img class="cell-content" src="/Content/img/o.svg" alt="O">
 }
 
 
@@ -18,7 +17,7 @@
                     <div class="field-row">
                         @for (var j = 0; j < fieldSize; j++)
                         {
-                            <div id="cell-@(i*3 + j)" class="field-cell empty-cell" data-player="none" onclick="cellClicked(this)"></div>
+                            <div id="cell-@(i*fieldSize + j)" class="field-cell empty-cell" data-player="none" onclick="cellClicked(this)"></div>
                         }
                     </div>
                 }
@@ -44,18 +43,22 @@
 
     @{
         <script type="text/javascript">
+            // Constants
             var playerName = '@Model.Player';
             var token = '@Model.Token';
             var id = '@Model.Id';
             var turnUrl = '@Url.Action("Turn", "Game")';
             var oPic = '<img class="cell-content" src="/Content/img/o.svg" alt="O">';
             var xPic = '<img class="cell-content" src="/Content/img/x.svg" alt="X">';
+            // Variables
             var isWait = false;
             var movesCounter = 0;
 
             // Game functions
 
+            // Cell click
             function cellClicked(cell) {
+                // Lock
                 if (isWait || !$("#" + cell.id).hasClass("empty-cell")) return;
                 isWait = true;
                 var data = {
@@ -77,17 +80,21 @@
             }
 
             function successMove(response, userMove) {
+                // Unlock
                 isWait = false;
                 if (response.status === "error") {
                     setStatus(borderLable(response.errorText, "warning"));
                     return;
                 }
+                // Show move
                 paintMove(userMove, 1);
                 addMove(userMove, 1);
+                // Show opponent move
                 if (response.opponentMove !== -1) {
                     paintMove(response.opponentMove, 2);
                     addMove(response.opponentMove, 2);
                 }
+                // Show results if done
                 if (response.isGameDone) {
                     $(".empty-cell").removeClass("empty-cell");
                     if (response.winner === 0)
@@ -112,14 +119,6 @@
                 return '<div class="label label-' + style + '">' + text + '</div>';
             }
 
-            //function infoLable(text) {
-            //    return '<div class="label label-info">' + text + '</div>';
-            //}
-
-            //function warningLable(text) {
-            //    return '<div class="label label-warning">' + text + '</div>';
-            //}
-
             function setStatus(text) {
                 $('#status').html(text);
             }
@@ -131,11 +130,11 @@
                 if (player === 2)
                     figure = oPic;
                 var target = $("#cell-" + cell);
-                //target.onclick = null;
                 target.removeClass("empty-cell");
                 target.html(figure);
             }
 
+            // Add move to table
             function addMove(move, player) {
                 var content = '<tr><td>' + ++movesCounter + '</td><td>';
                 if (player === 1)
@@ -147,7 +146,7 @@
             }
 
             function positionToString(position) {
-                return '[' + float2int(position % 3) + ';' + float2int(position / 3) + ']';
+                return '[' + float2int(position % @fieldSize) + ';' + float2int(position / @fieldSize) + ']';
             }
 
             // Extension functions
