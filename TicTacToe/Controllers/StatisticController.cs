@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using PagedList;
 using TicTacToe.Web.Data;
@@ -22,15 +19,24 @@ namespace TicTacToe.Web.Controllers
             }
             private set { context = value; }
         }
-        // GET: Statistic
+
+        /// <summary>
+        /// Вывод таблицы прошедших игр
+        /// </summary>
+        /// <param name="page">Номер страницы</param>
+        /// <returns>Представление с таблицей</returns>
         public ActionResult Index(int? page)
         {
-            var collection = Context.Games.OrderByDescending(g => g.StartTime);
-           
+            var collection = Context.Games.OrderByDescending(g => g.StartTime);         
             var pageNumber = (page ?? 1);
             return View(collection.ToPagedList(pageNumber, PageSize));
         }
 
+        /// <summary>
+        /// Вывод таблицы с детализацией шагов игры
+        /// </summary>
+        /// <param name="id">Id игры</param>
+        /// <returns>Частичное представление с таблицей</returns>
         [HttpGet]
         public ActionResult Details(int id)
         {
