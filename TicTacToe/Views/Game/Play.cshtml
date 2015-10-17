@@ -1,0 +1,185 @@
+﻿@model TicTacToe.Core.Game
+@{
+    ViewBag.Title = "Game";
+    const int fieldSize = 3;
+}
+
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <h1 id="status" class="text-center">Your turn
+            <div class="label label-info">@Model.Player</div>
+        </h1>
+        <div class="field-container container-fluid">
+            <div class="field">
+                @for (var i = 0; i < fieldSize; i++)
+                {
+                    <div class="field-row">
+                        @for (var j = 0; j < fieldSize; j++)
+                        {
+                            <div id="cell-@(i*fieldSize + j)" class="field-cell empty-cell" data-player="none" onclick="cellClicked(this)"></div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <h1 class="text-center">Moves history</h1>
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Player</th>
+                    <th>Position</th>
+                </tr>
+            </thead>
+            <tbody id="movesBody"></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+
+    @{
+        <script type="text/javascript">
+            // Constants
+            var playerName = '@Model.Player';
+            var token = '@Model.Token';
+            var id = '@Model.Id';
+            var turnUrl = '@Url.Action("Turn", "Game")';
+            var oPic = '<img class="cell-content" src="/Content/img/o.svg" alt="O">';
+            var xPic = '<img class="cell-content" src="/Content/img/x.svg" alt="X">';
+            // Variables
+            var isWait = false;
+            var movesCounter = 0;
+
+            // Game functions
+
+            // Cell click
+            function cellClicked(cell) {
+                // Lock
+                if (isWait || !$("#" + cell.id).hasClass("empty-cell")) return;
+                isWait = true;
+                var data = {
+                    "turn":
+                    {
+                        "gameId": id,
+                        "token": token,
+                        "turn": parseId(cell.id)
+                    }
+                };
+                setStatus("Waiting for " + borderLable("Bot", "info") + " turn");
+                sendRequest(
+                    turnUrl,
+                    JSON.stringify(data),
+                    function(obj) {
+                        successMove(obj, parseId(cell.id));
+                    },
+                    errorMove);
+            }
+
+            function successMove(response, userMove) {
+                // Unlock
+                isWait = false;
+                if (response.status === "error") {
+                    setStatus(borderLable(response.errorText, "warning"));
+                    return;
+                }
+                // Show move
+                paintMove(userMove, 1);
+                addMove(userMove, 1);
+                // Show opponent move
+                if (response.opponentMove !== -1) {
+                    paintMove(response.opponentMove, 2);
+                    addMove(response.opponentMove, 2);
+                }
+                // Show results if done
+                if (response.isGameDone) {
+                    $(".empty-cell").removeClass("empty-cell");
+                    if (response.winner === 0)
+                        setStatus(borderLable("Draw. Game done.", "default"));
+                    if (response.winner === 1)
+                        setStatus(borderLable(playerName + ", you win!", "success"));
+                    if (response.winner === 2)
+                        setStatus(borderLable("Bot win, you lose :(", "danger"));
+                    return;
+                }
+                setStatus(borderLable("Your turn " + playerName, "success"));
+            }
+
+            function errorMove(obj, status) {
+                isWait = false;
+                showError(obj, status);
+            }
+
+            // UI functions
+
+            function borderLable(text, style) {
+                return '<div class="label label-' + style + '">' + text + '</div>';
+            }
+
+            function setStatus(text) {
+                $('#status').html(text);
+            }
+
+            function paintMove(cell, player) {
+                var figure = "";
+                if (player === 1)
+                    figure = xPic;
+                if (player === 2)
+                    figure = oPic;
+                var target = $("#cell-" + cell);
+                target.removeClass("empty-cell");
+                target.html(figure);
+            }
+
+            // Add move to table
+            function addMove(move, player) {
+                var content = '<tr><td>' + ++movesCounter + '</td><td>';
+                if (player === 1)
+                    content += borderLable(playerName, "success");
+                if (player === 2)
+                    content += borderLable("Bot", "danger");
+                content += '</td><td>' + positionToString(move) + '</td></tr>';
+                $("#movesBody").append(content);
+            }
+
+            function positionToString(position) {
+                return '[' + float2int(position % @fieldSize) + ';' + float2int(position / @fieldSize) + ']';
+            }
+
+            // Extension functions
+
+            function sendRequest(url, data, success, error) {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: success,
+                    error: error
+                });
+            }
+
+            function float2int(value) {
+                return value | 0;
+            }
+
+            function parseId(str) {
+                return parseInt(str.replace(/[^\d.]/g, ''), 10);
+            }
+
+            function showError(xhr, status) {
+                alert("Произошла ошибка: " + xhr.status);
+            }
+
+
+        </script>
+    }
+}
+
+
+
+

@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Tic Tac Toe";
+}
+
+<div class="invite-panel">
+    <h1>Hi! Enter your name</h1>
+    <h1>
+        <div id="error-lable" class="label label-danger"></div>
+    </h1>
+    <input id="player-name" type="text" class="form-control"/>
+    <h1 style="margin-top: 10px;">and</h1>
+    <button class="btn btn-lg btn-success" onclick="playGame()">START</button>
+</div>
+
+
+@section Scripts {
+
+    @{
+        <script type="text/javascript">
+            // Start new game
+            function playGame() {
+                var text = $("#player-name").val();
+                if (text === null || text === "") {
+                    $("#error-lable").html("Name can't be empty!");
+                    return;
+                }
+                window.open("@Url.Action("Play", "Game")" + "?playerName=" + text, "_self");
+            }
+        </script>
+    }
+}
