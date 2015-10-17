@@ -151,6 +151,10 @@
     <Compile Include="ViewModels\TurnResultViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\db.mdf" />
+    <Content Include="App_Data\db_log.ldf">
+      <DependentUpon>db.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\o.svg" />
     <Content Include="Content\img\x.svg" />
@@ -280,7 +284,6 @@
     <Content Include="Views\Statistic\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
