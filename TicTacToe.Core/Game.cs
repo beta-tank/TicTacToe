@@ -56,13 +56,21 @@ namespace TicTacToe.Core
 
         public GameStatus IsDone()
         {
-            if (Status == GameStatus.Done) return Status;
+            if (Status == GameStatus.Done) return Status;            
             // Проверяем не выполнил ли один из игроков выйгрышную комбинацию
             foreach (var comb in WinCombinations.Where(comb => (Field[comb[0]] == PlayerCode.One || Field[comb[0]] == PlayerCode.Two)
                                                             && Field[comb[0]] == Field[comb[1]]
                                                             && Field[comb[1]] == Field[comb[2]]))
             {
                 Winner = Field[comb[0]];
+                EndTime = DateTime.UtcNow;
+                Status = GameStatus.Done;
+                return GameStatus.Done;
+            }
+            // Если ходов больше нет, то завершаем игру
+            if (Moves.Count == 9)
+            {
+                Winner = PlayerCode.None;
                 EndTime = DateTime.UtcNow;
                 Status = GameStatus.Done;
                 return GameStatus.Done;
