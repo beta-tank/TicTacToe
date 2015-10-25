@@ -64,12 +64,16 @@ namespace TicTacToe.Core
             var opponent = player.Opponent();
             var field = game.Field;
             // Ищем выйгрышные комбинации оппонента, которые мы ещё не блокировали, и пытаемся помешать
-            foreach (var comb in WinCombinations.Where(comb => ((field[comb[0]] == opponent && field[comb[0]] == field[comb[1]] && field[comb[2]] == PlayerCode.None) ||
-                                                                (field[comb[0]] == opponent && field[comb[0]] == field[comb[2]] && field[comb[1]] == PlayerCode.None) ||
-                                                                (field[comb[1]] == opponent && field[comb[1]] == field[comb[2]] && field[comb[0]] == PlayerCode.None))))
+            var combination =
+                WinCombinations.FirstOrDefault(
+                    comb =>
+                        ((field[comb[0]] == opponent && field[comb[0]] == field[comb[1]] && field[comb[2]] == PlayerCode.None) ||
+                         (field[comb[0]] == opponent && field[comb[0]] == field[comb[2]] && field[comb[1]] == PlayerCode.None) ||
+                         (field[comb[1]] == opponent && field[comb[1]] == field[comb[2]] && field[comb[0]] == PlayerCode.None)));
+            if(combination != null)
             {
                 // Занимаем свободную клетку в выйгрышной комбинации
-                cell = comb.Where(position => field[position] == PlayerCode.None).First();
+                cell = combination.Where(position => field[position] == PlayerCode.None).First();
             }
             return cell;
         }
@@ -79,12 +83,16 @@ namespace TicTacToe.Core
             var cell = -1;
             var opponent = player.Opponent();
             var field = game.Field;
-            foreach (var comb in WinCombinations.Where(comb => ((field[comb[0]] == player && field[comb[0]] == field[comb[1]] && field[comb[2]] == PlayerCode.None) ||
-                                                                    (field[comb[0]] == player && field[comb[0]] == field[comb[2]] && field[comb[1]] == PlayerCode.None) ||
-                                                                    (field[comb[1]] == player && field[comb[1]] == field[comb[2]] && field[comb[0]] == PlayerCode.None))))
+            var combination =
+                WinCombinations.FirstOrDefault(
+                    comb =>
+                       ((field[comb[0]] == player && field[comb[0]] == field[comb[1]] && field[comb[2]] == PlayerCode.None) ||
+                        (field[comb[0]] == player && field[comb[0]] == field[comb[2]] && field[comb[1]] == PlayerCode.None) ||
+                        (field[comb[1]] == player && field[comb[1]] == field[comb[2]] && field[comb[0]] == PlayerCode.None)));
+            if (combination != null)
             {
                 // Занимаем свободную клетку в выйгрышной комбинации
-                cell = comb.Where(position => field[position] == PlayerCode.None).First();
+                cell = combination.Where(position => field[position] == PlayerCode.None).First();
             }
             return cell;
         }
@@ -94,13 +102,17 @@ namespace TicTacToe.Core
             var cell = -1;
             var opponent = player.Opponent();
             var field = game.Field;
-            foreach (var comb in WinCombinations.Where(comb => ((field[comb[0]] == player && field[comb[1]] == field[comb[2]] && field[comb[1]] == PlayerCode.None) ||
-                                                            (field[comb[1]] == player && field[comb[0]] == field[comb[2]] && field[comb[0]] == PlayerCode.None) ||
-                                                            (field[comb[2]] == player && field[comb[0]] == field[comb[1]] && field[comb[0]] == PlayerCode.None))))
+            var combination =
+                WinCombinations.FirstOrDefault(
+                    comb =>
+                       ((field[comb[0]] == player && field[comb[1]] == field[comb[2]] && field[comb[1]] == PlayerCode.None) ||
+                        (field[comb[1]] == player && field[comb[0]] == field[comb[2]] && field[comb[0]] == PlayerCode.None) ||
+                        (field[comb[2]] == player && field[comb[0]] == field[comb[1]] && field[comb[0]] == PlayerCode.None)));
+            if (combination != null)
             {
                 // Занимаем любую свободную клетку
-                cell = comb.Where(position => field[position] == PlayerCode.None).First();
-            }
+                cell = combination.Where(position => field[position] == PlayerCode.None).First();
+            }           
             return cell;
         }
 
